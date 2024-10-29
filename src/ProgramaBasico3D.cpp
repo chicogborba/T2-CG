@@ -1,12 +1,3 @@
-// **********************************************************************
-// PUCRS/Escola Polit�cnica
-// COMPUTA��O GR�FICA
-//
-// Programa b�sico para criar aplicacoes 3D em OpenGL
-//
-// Marcio Sarroglia Pinho
-// pinho@pucrs.br
-// **********************************************************************
 
 #include <iostream>
 #include <cmath>
@@ -29,40 +20,25 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-#include "Temporizador.h"
 #include "ListaDeCoresRGB.h"
 #include "Ponto.h"
 #include "Instancia.h"
 #include "Tools.h"
+#include "Player.h"
 
-Temporizador T;
-double AccumDeltaT = 0;
-
-GLfloat AspectRatio, angulo = 0;
+GLfloat AspectRatio = 0;
 
 bool keyStates[256]; // Array para rastrear o estado das teclas
 
-// Controle do modo de projecao
-// 0: Projecao Paralela Ortografica; 1: Projecao Perspectiva
-// A funcao "PosicUser" utiliza esta variavel. O valor dela eh alterado
-// pela tecla 'p'
-int ModoDeProjecao = 1;
-
-// Controle do modo de projecao
-// 0: Wireframe; 1: Faces preenchidas
-// A funcao "Init" utiliza esta variavel. O valor dela eh alterado
-// pela tecla 'e'
-int ModoDeExibicao = 1;
-
-double nFrames = 0;
-double TempoTotal = 0;
 Ponto CantoEsquerdo = Ponto(-20, 0, -10);
 Ponto OBS;
 Ponto ALVO;
 Ponto VetorAlvo;
 GLfloat CameraMatrix[4][4];
 GLfloat InvCameraMatrix[4][4];
+
 Ponto PosicaoDoObjeto(0, 0, 4);
+Player player(OBS, VetorAlvo);
 
 float walkSpeed = 0.15;
 
@@ -81,33 +57,33 @@ void walk(int direction)
     }
     OBS.soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
     ALVO.soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
+
+    player.setOBS(OBS);
+    player.setVetorAlvo(VetorAlvo);
 }
 
-// nao foi pro h
 void lookSideways(int direction)
 {
-    // Deslocar conjunto ALVO e OBS para a origem
     ALVO.x -= OBS.x;
     ALVO.z -= OBS.z;
 
-    // Rotacionar
     float alfa = (direction == 0) ? 0.07 : -0.07;
     float x = ALVO.x * cos(alfa) + ALVO.z * sin(alfa);
     float z = -ALVO.x * sin(alfa) + ALVO.z * cos(alfa);
     ALVO.x = x;
     ALVO.z = z;
 
-    // Deslocar conjunto ALVO e OBS de volta
     ALVO.x += OBS.x;
     ALVO.z += OBS.z;
 
-    // Atualizar VetorAlvo para refletir a nova direção
     VetorAlvo.x = ALVO.x - OBS.x;
     VetorAlvo.y = ALVO.y - OBS.y;
     VetorAlvo.z = ALVO.z - OBS.z;
+
+    player.setOBS(OBS);
+    player.setVetorAlvo(VetorAlvo);
 }
 
-// nao foi pro h
 void initKeyStates()
 {
     for (int i = 0; i < 256; i++)
@@ -147,6 +123,7 @@ void updateCamera()
     {
         lookSideways(1);
     }
+    player.updatePlayerPosition();
     glutPostRedisplay();
 }
 
@@ -167,98 +144,11 @@ void init(void)
     // glShadeModel(GL_FLAT);
 
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-    if (ModoDeExibicao) // Faces Preenchidas??
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     ALVO = Ponto(0, 0, 0);
     OBS = Ponto(0, 3, 10);
     VetorAlvo = ALVO - OBS;
-}
-
-// **********************************************************************
-//
-// **********************************************************************
-void animate()
-{
-    double dt;
-    dt = T.getDeltaT();
-    AccumDeltaT += dt;
-    TempoTotal += dt;
-    nFrames++;
-
-    if (AccumDeltaT > 1.0 / 30) // fixa a atualiza��o da tela em 30
-    {
-        AccumDeltaT = 0;
-        angulo += 1;
-        glutPostRedisplay();
-    }
-    if (TempoTotal > 5.0)
-    {
-        cout << "Tempo Acumulado: " << TempoTotal << " segundos. ";
-        cout << "Nros de Frames sem desenho: " << nFrames << endl;
-        cout << "FPS(sem desenho): " << nFrames / TempoTotal << endl;
-        TempoTotal = 0;
-        nFrames = 0;
-    }
-}
-
-// **********************************************************************
-//  void DesenhaCubo()
-// **********************************************************************
-void DesenhaCubo(float tamAresta)
-{
-    glBegin(GL_QUADS);
-    // Front Face
-    glNormal3f(0, 0, 1);
-    glVertex3f(-tamAresta / 2, -tamAresta / 2, tamAresta / 2);
-    glVertex3f(tamAresta / 2, -tamAresta / 2, tamAresta / 2);
-    glVertex3f(tamAresta / 2, tamAresta / 2, tamAresta / 2);
-    glVertex3f(-tamAresta / 2, tamAresta / 2, tamAresta / 2);
-    // Back Face
-    glNormal3f(0, 0, -1);
-    glVertex3f(-tamAresta / 2, -tamAresta / 2, -tamAresta / 2);
-    glVertex3f(-tamAresta / 2, tamAresta / 2, -tamAresta / 2);
-    glVertex3f(tamAresta / 2, tamAresta / 2, -tamAresta / 2);
-    glVertex3f(tamAresta / 2, -tamAresta / 2, -tamAresta / 2);
-    // Top Face
-    glNormal3f(0, 1, 0);
-
-    glVertex3f(-tamAresta / 2, tamAresta / 2, -tamAresta / 2);
-
-    glVertex3f(-tamAresta / 2, tamAresta / 2, tamAresta / 2);
-
-    glVertex3f(tamAresta / 2, tamAresta / 2, tamAresta / 2);
-
-    glVertex3f(tamAresta / 2, tamAresta / 2, -tamAresta / 2);
-    // Bottom Face
-    glNormal3f(0, -1, 0);
-    glVertex3f(-tamAresta / 2, -tamAresta / 2, -tamAresta / 2);
-    glVertex3f(tamAresta / 2, -tamAresta / 2, -tamAresta / 2);
-    glVertex3f(tamAresta / 2, -tamAresta / 2, tamAresta / 2);
-    glVertex3f(-tamAresta / 2, -tamAresta / 2, tamAresta / 2);
-    // Right face
-    glNormal3f(1, 0, 0);
-    glVertex3f(tamAresta / 2, -tamAresta / 2, -tamAresta / 2);
-    glVertex3f(tamAresta / 2, tamAresta / 2, -tamAresta / 2);
-    glVertex3f(tamAresta / 2, tamAresta / 2, tamAresta / 2);
-    glVertex3f(tamAresta / 2, -tamAresta / 2, tamAresta / 2);
-    // Left Face
-    glNormal3f(-1, 0, 0);
-    glVertex3f(-tamAresta / 2, -tamAresta / 2, -tamAresta / 2);
-    glVertex3f(-tamAresta / 2, -tamAresta / 2, tamAresta / 2);
-    glVertex3f(-tamAresta / 2, tamAresta / 2, tamAresta / 2);
-    glVertex3f(-tamAresta / 2, tamAresta / 2, -tamAresta / 2);
-    glEnd();
-}
-void DesenhaParalelepipedo()
-{
-    glPushMatrix();
-    glTranslatef(0, 0, -1);
-    glScalef(1, 1, 2);
-    glutSolidCube(2);
-    // DesenhaCubo(1);
-    glPopMatrix();
+    player.updatePlayerPosition();
 }
 
 // **********************************************************************
@@ -399,12 +289,7 @@ void PosicUser()
     // Define os par�metros da proje��o Perspectiva
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // Define o volume de visualiza��o sempre a partir da posicao do
-    // observador
-    if (ModoDeProjecao == 0)
-        glOrtho(-12, 12, -12, 12, 1, 18); // Projecao paralela Orthografica
-    else
-        MygluPerspective(90, AspectRatio, 0.1, 50); // Projecao perspectiva
+    MygluPerspective(90, AspectRatio, 0.1, 50); // Projecao perspectiva
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -415,7 +300,6 @@ void PosicUser()
     // OBS = Ponto(0, 0, 10);
     // ALVO = Ponto(0, 0, 0);
 
-    printf("OBS inicial: %f %f %f\n", OBS.x, OBS.y, OBS.z);
     gluLookAt(OBS.x, OBS.y, OBS.z,    // Posi��o do Observador
               ALVO.x, ALVO.y, ALVO.z, // Posi��o do Alvo
               0.0, 1.0, 0.0);
@@ -472,89 +356,14 @@ void display(void)
     DesenhaChao();
     glPopMatrix();
 
-    glPushMatrix();
-    glTranslatef(5.0f, 0.0f, 3.0f);
-    glRotatef(angulo, 0, 1, 0);
-    glColor3f(0.5f, 0.0f, 0.0f); // Vermelho
-    glutSolidCube(2);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(-4.0f, 0.0f, 2.0f);
-    glRotatef(angulo, 0, 1, 0);
-    glColor3f(0.6156862745, 0.8980392157, 0.9803921569); // Azul claro
-    glutSolidCube(2);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(PosicaoDoObjeto.x, PosicaoDoObjeto.y, PosicaoDoObjeto.z);
-    glColor3f(0.8f, 0.8f, 0.0f); // AMARELO
-    glutSolidCube(2);
-    Ponto P;
-    P = InstanciaPonto(Ponto(0, 0, 0), InvCameraMatrix);
-    // P = InstanciaPonto(Ponto(0,0,0), OBS, ALVO);
-
-    // PosicaoDoObjeto.imprime("Posicao do Objeto:", "\n");
-    // P.imprime("Ponto Instanciado: ", "\n");
-    glPopMatrix();
-
     // glColor3f(0.8,0.8,0);
     // glutSolidTeapot(2);
     // DesenhaParedao();
 
+    // drawPlayer();
+    player.drawPlayer();
+
     glutSwapBuffers();
-}
-
-// **********************************************************************
-//  void keyboard ( unsigned char key, int x, int y )
-//
-//
-// **********************************************************************
-void keyboard(unsigned char key, int x, int y)
-{
-    switch (key)
-    {
-    case 27:     // Termina o programa qdo
-        exit(0); // a tecla ESC for pressionada
-        break;
-    case 'p':
-        ModoDeProjecao = !ModoDeProjecao;
-        glutPostRedisplay();
-        break;
-    case 'e':
-        ModoDeExibicao = !ModoDeExibicao;
-        init();
-        glutPostRedisplay();
-        break;
-    default:
-        cout << key;
-        break;
-    }
-}
-
-// **********************************************************************
-//  void arrow_keys ( int a_keys, int x, int y )
-// **********************************************************************
-void arrow_keys(int a_keys, int x, int y)
-{
-    switch (a_keys)
-    {
-    case GLUT_KEY_UP: // When Up Arrow Is Pressed...
-        PosicaoDoObjeto.z--;
-        break;
-    case GLUT_KEY_DOWN: // When Down Arrow Is Pressed...
-        PosicaoDoObjeto.z++;
-        break;
-    case GLUT_KEY_RIGHT:
-        PosicaoDoObjeto.x++;
-        break;
-    case GLUT_KEY_LEFT:
-        PosicaoDoObjeto.x--;
-        break;
-
-    default:
-        break;
-    }
 }
 
 // **********************************************************************
@@ -575,7 +384,6 @@ int main(int argc, char **argv)
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyDown);
     glutKeyboardUpFunc(keyUp);
-    glutSpecialFunc(arrow_keys);
     glutIdleFunc(updateCamera); // Usar a função de atualização contínua
 
     glutMainLoop();

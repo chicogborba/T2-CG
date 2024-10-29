@@ -5,7 +5,8 @@ INC_DIR = include
 BUILD_DIR = build
 BIN_DIR = bin
 
-FONTES = $(SRC_DIR)/Ponto.cpp $(SRC_DIR)/Poligono.cpp $(SRC_DIR)/Temporizador.cpp $(SRC_DIR)/ListaDeCoresRGB.cpp $(SRC_DIR)/Instancia.cpp $(SRC_DIR)/Tools.cpp $(SRC_DIR)/ProgramaBasico3D.cpp
+# Adicione Player.cpp às fontes
+FONTES = $(SRC_DIR)/Ponto.cpp $(SRC_DIR)/Poligono.cpp $(SRC_DIR)/ListaDeCoresRGB.cpp $(SRC_DIR)/Instancia.cpp $(SRC_DIR)/Tools.cpp $(SRC_DIR)/ProgramaBasico3D.cpp $(SRC_DIR)/Player.cpp
 OBJETOS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(FONTES))
 
 CPPFLAGS = -g -O3 -DGL_SILENCE_DEPRECATION -Wno-write-strings -Wno-narrowing -I$(INC_DIR) # Adiciona o diretório de cabeçalhos
