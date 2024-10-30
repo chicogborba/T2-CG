@@ -5,11 +5,11 @@ INC_DIR = include
 BUILD_DIR = build
 BIN_DIR = bin
 
-# Adicione Player.cpp às fontes
-FONTES = $(SRC_DIR)/Ponto.cpp $(SRC_DIR)/Poligono.cpp $(SRC_DIR)/ListaDeCoresRGB.cpp $(SRC_DIR)/Instancia.cpp $(SRC_DIR)/Tools.cpp $(SRC_DIR)/ProgramaBasico3D.cpp $(SRC_DIR)/Player.cpp
+# Usando wildcard para selecionar todos os arquivos .cpp na pasta src
+FONTES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJETOS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(FONTES))
 
-CPPFLAGS = -g -O3 -DGL_SILENCE_DEPRECATION -Wno-write-strings -Wno-narrowing -I$(INC_DIR) # Adiciona o diretório de cabeçalhos
+CPPFLAGS = -g -O3 -DGL_SILENCE_DEPRECATION -Wno-write-strings -Wno-narrowing -I$(INC_DIR)
 
 UNAME = $(shell uname)
 

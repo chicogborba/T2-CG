@@ -1,4 +1,5 @@
 
+
 #include <iostream>
 #include <cmath>
 #include <ctime>
@@ -25,10 +26,11 @@ using namespace std;
 #include "Instancia.h"
 #include "Tools.h"
 #include "Player.h"
+#include "KeyboardController.h"
 
 GLfloat AspectRatio = 0;
 
-bool keyStates[256]; // Array para rastrear o estado das teclas
+KeyboardController keyboardController;
 
 Ponto CantoEsquerdo = Ponto(-20, 0, -10);
 Ponto OBS;
@@ -43,7 +45,7 @@ Player player(OBS, VetorAlvo);
 float walkSpeed = 0.15;
 
 // nao foi pro h
-void walk(int direction)
+void goForward(int direction)
 {
     Ponto VetorAlvoUnitario = VetorAlvo;
     VetorAlvoUnitario.versor();
@@ -67,7 +69,7 @@ void lookSideways(int direction)
     ALVO.x -= OBS.x;
     ALVO.z -= OBS.z;
 
-    float alfa = (direction == 0) ? 0.07 : -0.07;
+    float alfa = (direction == 0) ? 0.05 : -0.05;
     float x = ALVO.x * cos(alfa) + ALVO.z * sin(alfa);
     float z = -ALVO.x * sin(alfa) + ALVO.z * cos(alfa);
     ALVO.x = x;
@@ -84,42 +86,22 @@ void lookSideways(int direction)
     player.setVetorAlvo(VetorAlvo);
 }
 
-void initKeyStates()
-{
-    for (int i = 0; i < 256; i++)
-    {
-        keyStates[i] = false;
-    }
-}
-
-// nao foi pro h
-void keyDown(unsigned char key, int x, int y)
-{
-    keyStates[key] = true;
-}
-
-// nao foi pro h
-void keyUp(unsigned char key, int x, int y)
-{
-    keyStates[key] = false;
-}
-
 // nao foi pro h
 void updateCamera()
 {
-    if (keyStates['w'])
+    if (keyboardController.isKeyPressed('w'))
     {
-        walk(0);
+        goForward(0);
     }
-    if (keyStates['s'])
+    if (keyboardController.isKeyPressed('s'))
     {
-        walk(1);
+        goForward(1);
     }
-    if (keyStates['a'])
+    if (keyboardController.isKeyPressed('a'))
     {
         lookSideways(0);
     }
-    if (keyStates['d'])
+    if (keyboardController.isKeyPressed('d'))
     {
         lookSideways(1);
     }
@@ -339,7 +321,6 @@ void reshape(int w, int h)
 // **********************************************************************
 //  void display( void )
 // **********************************************************************
-float PosicaoZ = -30;
 void display(void)
 {
 
@@ -356,11 +337,6 @@ void display(void)
     DesenhaChao();
     glPopMatrix();
 
-    // glColor3f(0.8,0.8,0);
-    // glutSolidTeapot(2);
-    // DesenhaParedao();
-
-    // drawPlayer();
     player.drawPlayer();
 
     glutSwapBuffers();
@@ -378,13 +354,12 @@ int main(int argc, char **argv)
     glutCreateWindow("Computacao Grafica - Exemplo Basico 3D");
 
     init();
-    initKeyStates(); // Inicializar o array de estados de teclas
 
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutKeyboardFunc(keyDown);
-    glutKeyboardUpFunc(keyUp);
-    glutIdleFunc(updateCamera); // Usar a função de atualização contínua
+    glutKeyboardFunc(KeyboardController::keyDown);
+    glutKeyboardUpFunc(KeyboardController::keyUp);
+    glutIdleFunc(updateCamera);
 
     glutMainLoop();
     return 0;

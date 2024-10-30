@@ -67,6 +67,7 @@
     "unordered_map": "cpp",
     "fstream": "cpp",
     "sstream": "cpp",
-    "cmath": "cpp"
+    "cmath": "cpp",
+    "__node_handle": "cpp"
   }
 }
