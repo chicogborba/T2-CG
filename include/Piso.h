@@ -15,6 +15,7 @@
 #ifdef __linux__
 #include <GL/glut.h>
 #endif
+
 #include "Ponto.h"
 #include "ListaDeCoresRGB.h"
 #include "Player.h"
