@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Ponto.h"
+#include <cmath>
 
 // Inclusão das bibliotecas necessárias dependendo do sistema operacional
 #ifdef WIN32
@@ -19,9 +20,10 @@
 class Player
 {
 private:
-  Ponto position;  // Posição atual do jogador
-  Ponto OBS;       // Ponto de observação da câmera
-  Ponto VetorAlvo; // Vetor que indica a direção para onde o jogador está olhando
+  Ponto position;    // Posição atual do jogador
+  Ponto OBS;         // Ponto de observação da câmera
+  Ponto VetorAlvo;   // Vetor que indica a direção para onde o jogador está olhando
+  float cannonAngle; // Ângulo de rotação do canhão
 
 public:
   // Construtor da classe Player
@@ -50,6 +52,9 @@ public:
 
   // Desenha o jogador na posição atual
   void drawPlayer();
+
+  void raiseCannon(float angleIncrement);
+  void lowerCannon(float angleDecrement);
 };
 
 #endif // PLAYER_H

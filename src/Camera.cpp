@@ -103,12 +103,11 @@ void Camera::lookSideways(int direction)
 // **********************************************************************
 void Camera::goForward(int direction)
 {
-  float walkSpeed = 0.15;
+  float walkSpeed = direction == 0 ? 0.15 : -0.15;
   Ponto VetorAlvoUnitario = *VetorAlvo;
   VetorAlvoUnitario.versor(); // Normaliza o vetor direção
 
-  // Aplica a velocidade de caminhada na direção correspondente
-  VetorAlvoUnitario.multiplica(direction == 0 ? walkSpeed : -walkSpeed, walkSpeed, walkSpeed);
+  VetorAlvoUnitario.multiplica(walkSpeed, walkSpeed, walkSpeed);
   OBS->soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
   ALVO->soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
 
@@ -128,6 +127,7 @@ void Camera::updateCamera()
   }
   if (keyboard.isKeyPressed('s'))
   {
+    printf("s");
     goForward(1); // Move para trás
   }
   if (keyboard.isKeyPressed('a'))
@@ -137,6 +137,14 @@ void Camera::updateCamera()
   if (keyboard.isKeyPressed('d'))
   {
     lookSideways(1); // Olha para a direita
+  }
+  if (keyboard.isKeyPressed('q'))
+  {
+    player->raiseCannon(1); // Levanta o canhão
+  }
+  if (keyboard.isKeyPressed('e'))
+  {
+    player->lowerCannon(1); // Abaixa o canhão
   }
 
   player->updatePlayerPosition(); // Atualiza a posição do jogador

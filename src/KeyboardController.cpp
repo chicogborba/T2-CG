@@ -1,4 +1,5 @@
 #include "KeyboardController.h"
+#include <cstdio>
 
 // Inicializa o array estático fora da classe
 bool KeyboardController::keyStates[256] = {false};
@@ -15,6 +16,7 @@ KeyboardController::KeyboardController()
 // Definições dos métodos estáticos
 void KeyboardController::keyDown(unsigned char key, int x, int y)
 {
+  // printf("Key pressed: %c\n", key);
   keyStates[key] = true; // Marca a tecla como pressionada
 }
 

@@ -1,5 +1,15 @@
 #include "Piso.h"
 
+/**
+ * @brief Construtor da classe Piso.
+ *
+ * Inicializa um piso com largura, profundidade, semente e tamanho do ladrilho.
+ *
+ * @param largura Largura do piso em ladrilhos.
+ * @param profundidade Profundidade do piso em ladrilhos.
+ * @param seed Semente para a geração de cores.
+ * @param tamanhoLadrilho Tamanho de cada ladrilho.
+ */
 Piso::Piso(int largura, int profundidade, int seed, float tamanhoLadrilho)
     : largura(largura), profundidade(profundidade), seed(seed), tamanhoLadrilho(tamanhoLadrilho)
 {
@@ -7,6 +17,11 @@ Piso::Piso(int largura, int profundidade, int seed, float tamanhoLadrilho)
   cantoEsquerdo = Ponto(-largura * tamanhoLadrilho / 2.0f, 0, -profundidade * tamanhoLadrilho / 2.0f);
 }
 
+/**
+ * @brief Desenha o piso.
+ *
+ * Utiliza a semente para gerar cores e desenha ladrilhos em uma grade.
+ */
 void Piso::desenhaPiso()
 {
   srand(seed); // Usa uma semente fixa para gerar sempre as mesmas cores no piso.
@@ -28,6 +43,14 @@ void Piso::desenhaPiso()
   glPopMatrix();
 }
 
+/**
+ * @brief Desenha um ladrilho.
+ *
+ * Define as cores de preenchimento e borda e desenha o ladrilho como um quadrado.
+ *
+ * @param corBorda Cor da borda do ladrilho.
+ * @param corDentro Cor interna do ladrilho.
+ */
 void Piso::desenhaLadrilho(int corBorda, int corDentro)
 {
   defineCor(corDentro); // Define a cor de preenchimento.
@@ -51,8 +74,12 @@ void Piso::desenhaLadrilho(int corBorda, int corDentro)
   glEnd();
 }
 
+/**
+ * @brief Desenha o chão.
+ *
+ * Método para desenhar o piso sem duplicação de lógica.
+ */
 void Piso::desenhaChao()
 {
-  // Desenha o piso com as dimensões especificadas (sem duplicação)
-  desenhaPiso();
+  desenhaPiso(); // Desenha o piso com as dimensões especificadas
 }
