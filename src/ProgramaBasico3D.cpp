@@ -27,12 +27,12 @@ using namespace std;
 #include "Tools.h"
 #include "Player.h"
 #include "KeyboardController.h"
+#include "Piso.h"
 
 GLfloat AspectRatio = 0;
 
 KeyboardController keyboardController;
 
-Ponto CantoEsquerdo = Ponto(-20, 0, -10);
 Ponto OBS;
 Ponto ALVO;
 Ponto VetorAlvo;
@@ -41,6 +41,7 @@ GLfloat InvCameraMatrix[4][4];
 
 Ponto PosicaoDoObjeto(0, 0, 4);
 Player player(OBS, VetorAlvo);
+Piso piso(5, 5, 100, 1);
 
 float walkSpeed = 0.15;
 
@@ -133,77 +134,14 @@ void init(void)
     player.updatePlayerPosition();
 }
 
-// **********************************************************************
-// void DesenhaLadrilho(int corBorda, int corDentro)
-// Desenha uma c�lula do piso.
-// Eh possivel definir a cor da borda e do interior do piso
-// O ladrilho tem largula 1, centro no (0,0,0) e est� sobre o plano XZ
-// **********************************************************************
-void DesenhaLadrilho(int corBorda, int corDentro)
-{
-    defineCor(corDentro); // desenha QUAD preenchido
-    // glColor3f(1,1,1);
-    glBegin(GL_QUADS);
-    glNormal3f(0, 1, 0);
-    glVertex3f(-0.5f, 0.0f, -0.5f);
-    glVertex3f(-0.5f, 0.0f, 0.5f);
-    glVertex3f(0.5f, 0.0f, 0.5f);
-    glVertex3f(0.5f, 0.0f, -0.5f);
-    glEnd();
+// void DesenhaParedao()
+// {
+//     glPushMatrix();
+//     glRotatef(90, 0, 0, 1);
+//     DesenhaPiso();
+//     glPopMatrix();
+// }
 
-    defineCor(corBorda);
-    // glColor3f(0,1,0);
-
-    glBegin(GL_LINE_STRIP);
-    glNormal3f(0, 1, 0);
-    glVertex3f(-0.5f, 0.0f, -0.5f);
-    glVertex3f(-0.5f, 0.0f, 0.5f);
-    glVertex3f(0.5f, 0.0f, 0.5f);
-    glVertex3f(0.5f, 0.0f, -0.5f);
-    glEnd();
-}
-
-// **********************************************************************
-//
-//
-// **********************************************************************
-void DesenhaPiso()
-{
-    srand(100); // usa uma semente fixa para gerar sempre as mesma cores no piso
-    glPushMatrix();
-    glTranslated(CantoEsquerdo.x, CantoEsquerdo.y, CantoEsquerdo.z);
-    for (int x = -20; x < 20; x++)
-    {
-        glPushMatrix();
-        for (int z = -20; z < 20; z++)
-        {
-            DesenhaLadrilho(MediumGoldenrod, rand() % 40);
-            glTranslated(0, 0, 1);
-        }
-        glPopMatrix();
-        glTranslated(1, 0, 0);
-    }
-    glPopMatrix();
-}
-
-void DesenhaParedao()
-{
-    glPushMatrix();
-    glRotatef(90, 0, 0, 1);
-    DesenhaPiso();
-    glPopMatrix();
-}
-void DesenhaChao()
-{
-    glPushMatrix();
-    glTranslated(-20, 0, 0);
-    DesenhaPiso();
-    glPopMatrix();
-    glPushMatrix();
-    glTranslated(20, 0, 0);
-    DesenhaPiso();
-    glPopMatrix();
-}
 // **********************************************************************
 //  void DefineLuz(void)
 // **********************************************************************
@@ -334,7 +272,7 @@ void display(void)
 
     glPushMatrix();
     glTranslatef(0, -1, 0);
-    DesenhaChao();
+    piso.desenhaChao();
     glPopMatrix();
 
     player.drawPlayer();
