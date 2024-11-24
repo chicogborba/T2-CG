@@ -117,7 +117,17 @@ void display(void)
     //     tiro.drawTiro();
     // }
 
-    paredao.detectarColisao(player.getPosition());
+    // paredao.detectarColisao(player.getPosition());
+    // usar o player.getTiros() para detectar colisão com os tiros
+
+    // Loop sobre os tiros
+
+    for (auto &tiro : player.getTiros())
+    {
+        // printar tiro.getPosition()
+        std::cout << "Tiro position: " << tiro.getPosition().x << " " << tiro.getPosition().y << " " << tiro.getPosition().z << std::endl;
+        paredao.detectarColisao(tiro.getPosition());
+    }
 
     player.updateTiros(); // Atualiza os tiros
 

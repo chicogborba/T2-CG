@@ -146,11 +146,18 @@ void Camera::updateCamera()
   {
     player->lowerCannon(1); // Abaixa o canhão
   }
-  if (keyboard.isKeyPressed(' '))
+
+  // Adiciona a lógica de disparo apenas quando a tecla "espaço" for pressionada
+  if (keyboard.isKeyPressed(' ') && !spaceKeyPressed)
   {
     Ponto cameraAlvo = *ALVO;
     player->dispararTiro(cameraAlvo); // Dispara um tiro
     printf(" disparou\n");
+    spaceKeyPressed = true; // Marca que a tecla "espaço" foi pressionada
+  }
+  else if (!keyboard.isKeyPressed(' ') && spaceKeyPressed)
+  {
+    spaceKeyPressed = false; // Reseta quando a tecla "espaço" é liberada
   }
 
   player->updatePlayerPosition(); // Atualiza a posição do jogador

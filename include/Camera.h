@@ -139,6 +139,7 @@ private:
   GLfloat CameraMatrix[4][4];    // Matriz da câmera
   GLfloat InvCameraMatrix[4][4]; // Matriz inversa da câmera
   KeyboardController keyboard;   // Controlador do teclado
+  bool spaceKeyPressed = false;
 
   // Variável para a razão de aspecto
   GLfloat AspectRatio;

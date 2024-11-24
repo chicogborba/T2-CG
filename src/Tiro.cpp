@@ -20,11 +20,17 @@ Tiro::Tiro(const Ponto &startPos, const Ponto &target, float speed)
 }
 
 // Atualiza a posição do tiro
+
 void Tiro::updateTiro()
 {
+  // Atualiza a posição do tiro na direção
   position.x += direction.x * speed;
+  // aplicar gravidade em y
   position.y += direction.y * speed;
   position.z += direction.z * speed;
+
+  // Aplica o efeito da gravidade (reduzindo o y)
+  // position.y -= 0.08f;
 }
 
 // Desenha o tiro na posição atual

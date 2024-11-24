@@ -62,6 +62,8 @@ public:
 
   void dispararTiro(Ponto cameraAlvo); // Dispara um tiro na direção do alvo
   void updateTiros();                  // Atualiza todos os tiros
+
+  std::vector<Tiro> getTiros() const { return tiros; };
 };
 
 #endif // PLAYER_H

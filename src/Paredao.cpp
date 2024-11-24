@@ -143,12 +143,40 @@ void Paredao::desenhaCubo(int corBorda, int corDentro)
 
 void Paredao::detectarColisao(Ponto objetoPosicao)
 {
-  int x = objetoPosicao.x - posicao.x;
-  int y = objetoPosicao.y - posicao.y;
+  // utiliza o x,y e z de cada do cubo pra verificar a colisão
 
-  if (x >= 0 && x < largura && y >= 0 && y < altura)
+  // loop sobre a lista de cubos pra ver se o objeto colidiu com algum
+
+  for (int x = 0; x < largura; x++)
   {
-    cubos[x][y].quebrado = true; // Marca o cubo como quebrado
+    for (int y = 0; y < altura; y++)
+    {
+      if (!cubos[x][y].quebrado)
+      {
+        // Verifica se o objeto colidiu com o cubo
+        if (objetoPosicao.x >= posicao.x + x && objetoPosicao.x <= posicao.x + x + 1 &&
+            objetoPosicao.y >= posicao.y + y && objetoPosicao.y <= posicao.y + y + 1 &&
+            objetoPosicao.z >= posicao.z && objetoPosicao.z <= posicao.z + 1)
+        {
+          // Marca o cubo como quebrado
+          // cubos[x][y].quebrado = true;
+
+          // Quebra todos os cubos adjacentes em um raio de 1 ou seja 3x3
+          for (int i = -1; i <= 1; i++)
+          {
+            for (int j = -1; j <= 1; j++)
+            {
+              if (x + i >= 0 && x + i < largura && y + j >= 0 && y + j < altura)
+              {
+                cubos[x + i][y + j].quebrado = true;
+              }
+            }
+          }
+
+          std::cout << "Cubo quebrado: " << x << " " << y << std::endl;
+        }
+      }
+    }
   }
 }
 
