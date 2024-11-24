@@ -21,6 +21,9 @@
 #include "KeyboardController.h"
 #include "Piso.h"
 #include "Camera.h"
+#include "Paredao.h"
+#include "Tiro.h"
+#include <vector>
 
 // Variáveis globais
 Ponto OBS(0, 3, 10);          // Ponto de observação da câmera
@@ -32,6 +35,8 @@ KeyboardController keyboardController;
 Player player(OBS, VetorAlvo);
 Camera camera(&player, &OBS, &ALVO, &VetorAlvo, keyboardController);
 Piso piso(25, 50, 100, 1);
+Paredao paredao(25, 15, Ponto(-12.5, 0, 0), 100);
+// std::vector<Tiro> tiros;
 
 // **********************************************************************
 //  void init(void)
@@ -52,7 +57,14 @@ void init(void)
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+    piso.carregarTextura("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/textures/grass.png");
+    paredao.carregarTextura("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/textures/brick.png");
+
     player.updatePlayerPosition();
+
+    // Cria um tiro inicial para testes
+    // Tiro tiro(player.getPosition(), Ponto(0, 0, 0), 0.1f);
+    // tiros.push_back(tiro);
 }
 
 // **********************************************************************
@@ -92,9 +104,22 @@ void display(void)
     glPushMatrix();
     glTranslatef(0, -1, 0);
     piso.desenhaChao(); // Desenha o chão
+    paredao.desenhaParedao();
     glPopMatrix();
 
     player.drawPlayer(); // Desenha o jogador
+
+    // std::cout << "Player position: " << player.getPosition().x << " " << player.getPosition().y << " " << player.getPosition().z << std::endl;
+
+    // for (auto &tiro : tiros)
+    // {
+    //     tiro.updateTiro();
+    //     tiro.drawTiro();
+    // }
+
+    paredao.detectarColisao(player.getPosition());
+
+    player.updateTiros(); // Atualiza os tiros
 
     glutSwapBuffers(); // Troca os buffers
 }

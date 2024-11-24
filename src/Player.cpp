@@ -68,6 +68,42 @@ void Player::lowerCannon(float angleDecrement)
   }
 }
 
+void Player::dispararTiro(Ponto cameraAlvo)
+{
+  printf("Disparando tiro\n");
+  // Vetor direção baseado no vetor alvo
+  Ponto direction = cameraAlvo;
+
+  // Usa o ângulo do canhão para calcular a direção.y
+  direction.y = tan(cannonAngle * M_PI / 180.0f) * 5.0f;
+
+  // Cria um tiro na posição do jogador e na direção do vetor alvo
+  Tiro tiro(position, direction, 1.2f);
+
+  // Adiciona o tiro ao vetor de tiros
+  tiros.push_back(tiro);
+
+  // Se o número de tiros for maior que 10, remove o mais antigo
+  if (tiros.size() > 10)
+  {
+    tiros.erase(tiros.begin()); // Remove o primeiro elemento (o mais antigo)
+  }
+}
+
+void Player::updateTiros()
+{
+  // Se não houver tiros, não faça nada
+  if (tiros.empty())
+  {
+    return;
+  }
+  for (auto &tiro : tiros)
+  {
+    tiro.updateTiro();
+    tiro.drawTiro();
+  }
+}
+
 // Função para desenhar o canhão do jogador
 void drawPlayerCannon(float length, float width, float height)
 {

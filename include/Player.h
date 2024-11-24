@@ -16,14 +16,18 @@
 #include <sys/time.h>
 #endif
 
+#include <vector>
+#include "Tiro.h"
+
 // Classe que representa o jogador no ambiente 3D
 class Player
 {
 private:
-  Ponto position;    // Posição atual do jogador
-  Ponto OBS;         // Ponto de observação da câmera
-  Ponto VetorAlvo;   // Vetor que indica a direção para onde o jogador está olhando
-  float cannonAngle; // Ângulo de rotação do canhão
+  Ponto position;          // Posição atual do jogador
+  Ponto OBS;               // Ponto de observação da câmera
+  Ponto VetorAlvo;         // Vetor que indica a direção para onde o jogador está olhando
+  float cannonAngle;       // Ângulo de rotação do canhão
+  std::vector<Tiro> tiros; // Vetor de tiros disparados
 
 public:
   // Construtor da classe Player
@@ -55,6 +59,9 @@ public:
 
   void raiseCannon(float angleIncrement);
   void lowerCannon(float angleDecrement);
+
+  void dispararTiro(Ponto cameraAlvo); // Dispara um tiro na direção do alvo
+  void updateTiros();                  // Atualiza todos os tiros
 };
 
 #endif // PLAYER_H

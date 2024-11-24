@@ -146,6 +146,12 @@ void Camera::updateCamera()
   {
     player->lowerCannon(1); // Abaixa o canhão
   }
+  if (keyboard.isKeyPressed(' '))
+  {
+    Ponto cameraAlvo = *ALVO;
+    player->dispararTiro(cameraAlvo); // Dispara um tiro
+    printf(" disparou\n");
+  }
 
   player->updatePlayerPosition(); // Atualiza a posição do jogador
   glutPostRedisplay();            // Redesenha a cena
@@ -195,11 +201,11 @@ void Camera::PosicUser()
 // **********************************************************************
 void Camera::DefineLuz(void)
 {
-  GLfloat LuzAmbiente[] = {0.4, 0.4, 0.4};
+  GLfloat LuzAmbiente[] = {0.8, 0.8, 0.8};
   GLfloat LuzDifusa[] = {0.7, 0.7, 0.7};
-  GLfloat PosicaoLuz0[] = {0.0f, 3.0f, 5.0f}; // Posição da Luz
-  GLfloat LuzEspecular[] = {0.9f, 0.9f, 0.9f};
-  GLfloat Especularidade[] = {1.0f, 1.0f, 1.0f};
+  GLfloat PosicaoLuz0[] = {0.0f, 5.0f, 0.0f}; // Posição da Luz
+  // GLfloat LuzEspecular[] = {1.0f, 1.0f, 1.0f};
+  // GLfloat Especularidade[] = {1.0f, 1.0f, 1.0f};
 
   glEnable(GL_COLOR_MATERIAL); // Habilita o uso de cores
 
@@ -207,12 +213,12 @@ void Camera::DefineLuz(void)
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LuzAmbiente);
   glLightfv(GL_LIGHT0, GL_AMBIENT, LuzAmbiente);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, LuzDifusa);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, LuzEspecular);
+  // glLightfv(GL_LIGHT0, GL_SPECULAR, LuzEspecular);
   glLightfv(GL_LIGHT0, GL_POSITION, PosicaoLuz0);
   glEnable(GL_LIGHT0);
 
-  glMaterialfv(GL_FRONT, GL_SPECULAR, Especularidade); // Define a refletividade
-  glMateriali(GL_FRONT, GL_SHININESS, 128);            // Define a concentração do brilho
+  // glMaterialfv(GL_FRONT, GL_SPECULAR, Especularidade); // Define a refletividade
+  glMateriali(GL_FRONT, GL_SHININESS, 128); // Define a concentração do brilho
 }
 
 // **********************************************************************

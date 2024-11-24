@@ -21,6 +21,7 @@
 #include "ListaDeCoresRGB.h"
 #include "Player.h"
 #include "KeyboardController.h"
+#include "TextureClass.h"
 
 /**
  * @brief Classe que representa um piso.
@@ -31,6 +32,8 @@
 class Piso
 {
 public:
+  GLuint idTextura; // Identificador da textura do piso
+
   /**
    * @brief Construtor da classe Piso.
    *
@@ -56,6 +59,13 @@ public:
    * Método para desenhar o piso sem duplicação de lógica.
    */
   void desenhaChao();
+
+  /**
+   * @brief Carrega uma textura para o piso.
+   *
+   * @param caminho Caminho para a textura a ser carregada.
+   */
+  void carregarTextura(const char *caminho);
 
 private:
   /**
