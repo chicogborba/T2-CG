@@ -1,8 +1,8 @@
 #include "Tiro.h"
 
 // Construtor da classe Tiro
-Tiro::Tiro(const Ponto &startPos, const Ponto &target, float speed)
-    : position(startPos), speed(speed)
+Tiro::Tiro(const Ponto &startPos, const Ponto &target, float speed, float initialVerticalSpeed)
+    : position(startPos), speed(speed), initialVerticalSpeed(initialVerticalSpeed)
 {
   // Calcula a direção normalizada
   float dx = target.x - startPos.x;
@@ -19,14 +19,16 @@ Tiro::Tiro(const Ponto &startPos, const Ponto &target, float speed)
   }
 }
 
-// Atualiza a posição do tiro
-
 void Tiro::updateTiro()
 {
+
+  // printf("initialSpeed: %f\n", initialVerticalSpeed);
+  // printf("speed: %f\n", speed);
   // Atualiza a posição do tiro na direção
   position.x += direction.x * speed;
-  // aplicar gravidade em y
-  position.y += direction.y * speed;
+  initialVerticalSpeed -= 0.003f;
+
+  position.y += direction.y * initialVerticalSpeed;
   position.z += direction.z * speed;
 
   // Aplica o efeito da gravidade (reduzindo o y)

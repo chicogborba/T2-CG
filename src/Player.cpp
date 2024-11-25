@@ -78,7 +78,7 @@ void Player::dispararTiro(Ponto cameraAlvo)
   direction.y = tan(cannonAngle * M_PI / 180.0f) * 5.0f;
 
   // Cria um tiro na posição do jogador e na direção do vetor alvo
-  Tiro tiro(position, direction, 0.3f);
+  Tiro tiro(position, direction, 0.3f, 0.3f);
 
   // Adiciona o tiro ao vetor de tiros
   tiros.push_back(tiro);

@@ -23,6 +23,10 @@
 #include "Camera.h"
 #include "Paredao.h"
 #include "Tiro.h"
+#include "TextureClass.h"
+#include "Modelo3D.h"
+#include "ListOfObjects.h"
+
 #include <vector>
 
 // Variáveis globais
@@ -36,6 +40,8 @@ Player player(OBS, VetorAlvo);
 Camera camera(&player, &OBS, &ALVO, &VetorAlvo, keyboardController);
 Piso piso(25, 50, 100, 1);
 Paredao paredao(25, 15, Ponto(-12.5, 0, 0), 100);
+Modelo3D *arvore = nullptr;
+
 // std::vector<Tiro> tiros;
 
 // **********************************************************************
@@ -44,8 +50,16 @@ Paredao paredao(25, 15, Ponto(-12.5, 0, 0), 100);
 // **********************************************************************
 void init(void)
 {
-    // Define a cor de fundo
-    glClearColor(0.4f, 1.0f, 0.0f, 1.0f);
+
+    arvore = new Modelo3D(10.0f, -1.0f, 10.0f);                                                    // Posição inicial
+    arvore->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/tree.obj"); // Carrega o modelo
+    // 7, 84, 3
+    arvore->setColor(0.17f, 0.23f, 0.02f); // Define a cor do modelo
+    arvore->setEscala(8.0f, 8.0f, 8.0f);   // Dobra o tamanho
+    arvore->setRotacao(0.0f, 45.0f, 0.0f); // Rotaciona 45 graus no eixo Y
+
+    // Define a cor de fundo como um azul claro tipo o céu
+    glClearColor(0.7f, 0.9f, 1.0f, 1.0f);
 
     glClearDepth(1.0);
     glDepthFunc(GL_LESS);
@@ -125,11 +139,16 @@ void display(void)
     for (auto &tiro : player.getTiros())
     {
         // printar tiro.getPosition()
-        std::cout << "Tiro position: " << tiro.getPosition().x << " " << tiro.getPosition().y << " " << tiro.getPosition().z << std::endl;
+        // std::cout << "Tiro position: " << tiro.getPosition().x << " " << tiro.getPosition().y << " " << tiro.getPosition().z << std::endl;
         paredao.detectarColisao(tiro.getPosition());
     }
 
     player.updateTiros(); // Atualiza os tiros
+
+    if (arvore)
+    {
+        arvore->desenhar();
+    }
 
     glutSwapBuffers(); // Troca os buffers
 }

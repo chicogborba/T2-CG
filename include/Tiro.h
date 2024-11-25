@@ -23,13 +23,16 @@ private:
   Ponto position;  // Posição atual do tiro
   Ponto direction; // Direção do tiro (normalizada)
   float speed;     // Velocidade do tiro
+  float initialVerticalSpeed;
+  // float time;                             // Tempo decorrido desde o disparo
+  // static constexpr float GRAVITY = 9.81f; // Aceleração da gravidade
 
 public:
   // Construtor da classe Tiro
   // @param startPos Posição inicial do tiro
   // @param target Alvo do tiro, usado para calcular a direção
   // @param speed Velocidade do tiro
-  Tiro(const Ponto &startPos, const Ponto &target, float speed);
+  Tiro(const Ponto &startPos, const Ponto &target, float speed, float initialVerticalSpeed);
 
   // Atualiza a posição do tiro
   void updateTiro();

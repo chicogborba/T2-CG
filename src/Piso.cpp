@@ -53,6 +53,8 @@ void Piso::desenhaPiso()
  */
 void Piso::desenhaLadrilho(int corBorda, int corDentro)
 {
+  // Reseta qualquer cor que estava antes
+  glColor3f(1.0f, 1.0f, 1.0f);
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, idTextura); // Vincula a textura carregada
 
