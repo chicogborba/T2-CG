@@ -16,9 +16,14 @@ OBJETOS_CPP = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(FONTES_CPP))
 OBJETOS_C = $(patsubst $(SOIL_DIR)/%.c, $(BUILD_DIR)/%.o, $(FONTES_C))
 OBJETOS = $(OBJETOS_CPP) $(OBJETOS_C)
 
-# Flags do compilador
-CPPFLAGS = -g -O3 -std=c++17 -DGL_SILENCE_DEPRECATION -Wno-write-strings -Wno-narrowing -I$(INC_DIR) -I$(SOIL_DIR)
-CFLAGS = $(CPPFLAGS)  # Mesmo que CPPFLAGS
+# Flags comuns para ambos compiladores
+COMMON_FLAGS = -g -O3 -DGL_SILENCE_DEPRECATION -Wno-write-strings -Wno-narrowing -I$(INC_DIR) -I$(SOIL_DIR)
+
+# Flags específicas para C++
+CPPFLAGS = $(COMMON_FLAGS) -std=c++17
+
+# Flags específicas para C
+CFLAGS = $(COMMON_FLAGS)
 
 UNAME = $(shell uname)
 
