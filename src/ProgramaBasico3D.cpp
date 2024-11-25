@@ -71,10 +71,10 @@ void init(void)
 {
 
     arvore = new Modelo3D(10.0f, -1.0f, 10.0f);                                                    // Posição inicial
-    arvore->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/tank.obj"); // Carrega o modelo
+    arvore->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/tree.obj"); // Carrega o modelo
     // 7, 84, 3
     arvore->setColor(1.17f, 0.23f, 0.02f); // Define a cor do modelo
-    arvore->setEscala(0.6f, 0.6f, 0.6f);   // Dobra o tamanho
+    arvore->setEscala(8.0f, 8.0f, 8.0f);   // Dobra o tamanho
     arvore->setRotacao(0.0f, 45.0f, 0.0f); // Rotaciona 45 graus no eixo Y
     modelos.push_back(*arvore);
 

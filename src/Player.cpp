@@ -2,7 +2,16 @@
 
 // Construtor da classe Player
 Player::Player(const Ponto &obs, const Ponto &vetorAlvo)
-    : OBS(obs), VetorAlvo(vetorAlvo) {}
+    : OBS(obs), VetorAlvo(vetorAlvo)
+{
+  modeloCorpo = new Modelo3D(0.0f, 0.0f, 0.0f);                                                       // Inicializa o modelo 3D
+  modeloCorpo->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/tank.obj"); // Carrega o modelo 3D do corpo
+  modeloCorpo->setColor(0.16f, 0.20f, 0.12f);                                                         // Define a cor do modelo
+  modeloCorpo->setEscala(0.5f, 0.5f, 0.5f);                                                           // Define a escala do modelo
+  modeloCorpo->setRotacao(0.0f, 180.0f, 0.0f);                                                        // Rotaciona o modelo 3D (se necessário)
+
+  cannonAngle = 6.0f; // Inicializa o ângulo do canhão
+}
 
 // Retorna a posição atual do jogador
 Ponto Player::getPosition() const
@@ -114,31 +123,32 @@ void drawPlayerCannon(float length, float width, float height)
   glPopMatrix();
 }
 
-// Desenha o jogador na posição atual
 void Player::drawPlayer()
 {
   glPushMatrix();
   glColor3f(0.16f, 0.20f, 0.12f);
   glTranslatef(position.x, -0.5f, position.z);
 
+  // Rotação do modelo para ajustar o tanque à direção do jogador
   float angle = atan2(VetorAlvo.z, VetorAlvo.x) * 180 / M_PI;
   glRotatef(-angle, 0, 1, 0);
 
-  drawPlayerBody(3.0f, 2.0f, 1.0f);
+  // Agora desenha o modelo 3D do corpo do jogador
+  if (modeloCorpo != nullptr)
+  {
+    modeloCorpo->desenhar(); // Método para desenhar o modelo 3D
+  }
 
-  // Posiciona o canhão em cima do corpo do tanque
+  // Desenha o canhão do jogador
   glPushMatrix();
   glTranslatef(1.5f, 0.6f, 0.0f); // Ajusta a posição do canhão
 
-  // Desloca o centro de rotação para o ponto desejado dentro do canhão
-  glTranslatef(-2.0f, 0.0f, 0.0f); // Desloca o centro de rotação para cima (por exemplo)
+  // Rotaciona o canhão
+  glTranslatef(-2.0f, 0.0f, 0.0f);
+  glRotatef(cannonAngle, 0, 0, 1);
+  glTranslatef(2.0f, 0.0f, 0.0f);
 
-  // Rotaciona o canhão em torno do novo centro
-  glRotatef(cannonAngle, 0, 0, 1); // Rotaciona em torno do eixo X
-  glTranslatef(2.0f, 0.0f, 0.0f);  // Ajusta a posição do canhão
-
-  // Agora desenhe o canhão na nova posição
-  drawPlayerCannon(4.0f, 0.5f, 0.5f);
+  drawPlayerCannon(4.0f, 0.5f, 0.5f); // Desenha o canhão
 
   glPopMatrix();
   glPopMatrix();

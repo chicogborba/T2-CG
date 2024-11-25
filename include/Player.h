@@ -18,6 +18,7 @@
 
 #include <vector>
 #include "Tiro.h"
+#include "Modelo3D.h"
 
 // Classe que representa o jogador no ambiente 3D
 class Player
@@ -28,6 +29,7 @@ private:
   Ponto VetorAlvo;         // Vetor que indica a direção para onde o jogador está olhando
   float cannonAngle;       // Ângulo de rotação do canhão
   std::vector<Tiro> tiros; // Vetor de tiros disparados
+  Modelo3D *modeloCorpo;
 
 public:
   // Construtor da classe Player

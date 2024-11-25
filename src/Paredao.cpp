@@ -27,7 +27,16 @@ void Paredao::desenhaParedao()
     {
       if (!cubos[x][y].quebrado)
       {
-        desenhaCubo(MediumGoldenrod, rand() % 40);
+        // Divida a textura em um número de quadrados
+        int numTilesX = 50; // Número de tiles horizontais (por exemplo, 10x10)
+        int numTilesY = 25; // Número de tiles verticais (por exemplo, 10x10)
+
+        // Calcular as coordenadas de textura para o cubo
+        float texCoordX = (float)(x % numTilesX) / numTilesX;
+        float texCoordY = (float)(y % numTilesY) / numTilesY;
+
+        // Desenha o cubo usando a parte da textura correspondente
+        desenhaCubo(MediumGoldenrod, texCoordX, texCoordY, 1.0f / numTilesX, 1.0f / numTilesY);
       }
       glTranslated(0, 1.0f, 0);
     }
@@ -38,9 +47,9 @@ void Paredao::desenhaParedao()
 }
 
 /**
- * @brief Desenha um polígono quadrado.
+ * @brief Desenha um polígono quadrado (cubo) com coordenadas de textura.
  */
-void Paredao::desenhaCubo(int corBorda, int corDentro)
+void Paredao::desenhaCubo(int corBorda, float texCoordX, float texCoordY, float texWidth, float texHeight)
 {
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, idTextura); // Vincula a textura carregada
@@ -81,35 +90,35 @@ void Paredao::desenhaCubo(int corBorda, int corDentro)
 
   GLfloat texCoords[6][4][2] = {
       {// Frente
-       {0.0f, 0.0f},
-       {1.0f, 0.0f},
-       {1.0f, 1.0f},
-       {0.0f, 1.0f}},
+       {texCoordX, texCoordY},
+       {texCoordX + texWidth, texCoordY},
+       {texCoordX + texWidth, texCoordY + texHeight},
+       {texCoordX, texCoordY + texHeight}},
       {// Traseira
-       {0.0f, 0.0f},
-       {1.0f, 0.0f},
-       {1.0f, 1.0f},
-       {0.0f, 1.0f}},
+       {texCoordX, texCoordY},
+       {texCoordX + texWidth, texCoordY},
+       {texCoordX + texWidth, texCoordY + texHeight},
+       {texCoordX, texCoordY + texHeight}},
       {// Topo
-       {0.0f, 0.0f},
-       {1.0f, 0.0f},
-       {1.0f, 1.0f},
-       {0.0f, 1.0f}},
+       {texCoordX, texCoordY},
+       {texCoordX + texWidth, texCoordY},
+       {texCoordX + texWidth, texCoordY + texHeight},
+       {texCoordX, texCoordY + texHeight}},
       {// Base
-       {0.0f, 0.0f},
-       {1.0f, 0.0f},
-       {1.0f, 1.0f},
-       {0.0f, 1.0f}},
+       {texCoordX, texCoordY},
+       {texCoordX + texWidth, texCoordY},
+       {texCoordX + texWidth, texCoordY + texHeight},
+       {texCoordX, texCoordY + texHeight}},
       {// Esquerda
-       {0.0f, 0.0f},
-       {1.0f, 0.0f},
-       {1.0f, 1.0f},
-       {0.0f, 1.0f}},
+       {texCoordX, texCoordY},
+       {texCoordX + texWidth, texCoordY},
+       {texCoordX + texWidth, texCoordY + texHeight},
+       {texCoordX, texCoordY + texHeight}},
       {// Direita
-       {0.0f, 0.0f},
-       {1.0f, 0.0f},
-       {1.0f, 1.0f},
-       {0.0f, 1.0f}}};
+       {texCoordX, texCoordY},
+       {texCoordX + texWidth, texCoordY},
+       {texCoordX + texWidth, texCoordY + texHeight},
+       {texCoordX, texCoordY + texHeight}}};
 
   glBegin(GL_QUADS);
 
@@ -130,15 +139,6 @@ void Paredao::desenhaCubo(int corBorda, int corDentro)
   glEnable(GL_CULL_FACE); // Reativa o culling
 
   glDisable(GL_TEXTURE_2D);
-
-  // Desenhe a borda (opcional, sem textura)
-  // defineCor(corBorda);
-  // glBegin(GL_LINE_LOOP);
-  // glVertex3f(-0.5f, -0.5f, 0.5f);
-  // glVertex3f(-0.5f, 0.5f, 0.5f);
-  // glVertex3f(0.5f, 0.5f, 0.5f);
-  // glVertex3f(0.5f, -0.5f, 0.5f);
-  // glEnd();
 }
 
 void Paredao::detectarColisao(Ponto objetoPosicao)
@@ -180,9 +180,6 @@ void Paredao::detectarColisao(Ponto objetoPosicao)
   }
 }
 
-/**
- * @brief Carrega a textura do paredão.
- */
 void Paredao::carregarTextura(const char *caminho)
 {
   idTextura = LoadTexture(caminho);

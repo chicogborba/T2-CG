@@ -83,7 +83,7 @@ private:
    * @param corBorda Cor da borda do cubo.
    * @param corDentro Cor interna do cubo.
    */
-  void desenhaCubo(int corBorda, int corDentro);
+  void desenhaCubo(int corBorda, float texCoordX, float texCoordY, float texWidth, float texHeight);
 
   Ponto posicao;                        ///< Posição do canto inferior esquerdo do paredão.
   std::vector<std::vector<Cubo>> cubos; ///< Matriz de cubos que compõem o paredão
