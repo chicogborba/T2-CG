@@ -71,6 +71,12 @@ Modelo3D *fence10 = nullptr;
 Modelo3D *fence11 = nullptr;
 Modelo3D *fence12 = nullptr;
 
+Modelo3D *enemyStar = nullptr;
+Modelo3D *enemyStar2 = nullptr;
+Modelo3D *enemyStar3 = nullptr;
+Modelo3D *enemyStar4 = nullptr;
+Modelo3D *enemyStar5 = nullptr;
+
 // Uma lista de Modelos3D pra renderizar todos de uma vez
 std::vector<Modelo3D> modelos;
 
@@ -209,6 +215,42 @@ void init(void)
     fence12->setEscala(0.6f, 0.25f, 0.25f);                                                          // Dobra o tamanho
     fence12->setRotacao(0.0f, 0.0f, 0.0f);                                                           // Rotaciona 45 graus no eixo Y
     modelos.push_back(*fence12);
+
+    // ENEMY STARS todas no z negativo
+    enemyStar = new Modelo3D(3.0f, 5.0f, -5.0f);                                                      // Posição inicial
+    enemyStar->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/star.obj"); // Carrega o modelo
+    enemyStar->setColor(0.8f, 0.0f, 0.0f);                                                            // Define a cor do modelo
+    enemyStar->setEscala(0.01f, 0.01f, 0.01f);                                                        // Dobra o tamanho
+    enemyStar->setRotacao(0.0f, 90.0f, 0.0f);                                                         // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*enemyStar);
+
+    enemyStar2 = new Modelo3D(-3.0f, 4.0f, -2.0f);                                                     // Posição inicial
+    enemyStar2->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/star.obj"); // Carrega o modelo
+    enemyStar2->setColor(0.8f, 0.0f, 0.0f);                                                            // Define a cor do modelo
+    enemyStar2->setEscala(0.01f, 0.01f, 0.01f);                                                        // Dobra o tamanho
+    enemyStar2->setRotacao(0.0f, 90.0f, 0.0f);                                                         // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*enemyStar2);
+
+    enemyStar3 = new Modelo3D(3.0f, 6.0f, -20.0f);                                                     // Posição inicial
+    enemyStar3->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/star.obj"); // Carrega o modelo
+    enemyStar3->setColor(0.8f, 0.0f, 0.0f);                                                            // Define a cor do modelo
+    enemyStar3->setEscala(0.01f, 0.01f, 0.01f);                                                        // Dobra o tamanho
+    enemyStar3->setRotacao(0.0f, 90.0f, 0.0f);                                                         // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*enemyStar3);
+
+    enemyStar4 = new Modelo3D(-7.0f, 2.0f, -10.0f);                                                    // Posição inicial
+    enemyStar4->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/star.obj"); // Carrega o modelo
+    enemyStar4->setColor(0.8f, 0.0f, 0.0f);                                                            // Define a cor do modelo
+    enemyStar4->setEscala(0.01f, 0.01f, 0.01f);                                                        // Dobra o tamanho
+    enemyStar4->setRotacao(0.0f, 90.0f, 0.0f);                                                         // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*enemyStar4);
+
+    enemyStar5 = new Modelo3D(3.0f, 1.0f, -15.0f);                                                     // Posição inicial
+    enemyStar5->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/star.obj"); // Carrega o modelo
+    enemyStar5->setColor(0.8f, 0.0f, 0.0f);                                                            // Define a cor do modelo
+    enemyStar5->setEscala(0.01f, 0.01f, 0.01f);                                                        // Dobra o tamanho
+    enemyStar5->setRotacao(0.0f, 90.0f, 0.0f);                                                         // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*enemyStar5);
 
     // Define a cor de fundo como um azul claro tipo o céu
     glClearColor(0.7f, 0.9f, 1.0f, 1.0f);
