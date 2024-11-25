@@ -25,8 +25,13 @@
 #include "Tiro.h"
 #include "TextureClass.h"
 #include "Modelo3D.h"
+#include "PontosManager.h"
 
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <string>
 
 // Variáveis globais
 Ponto OBS(0, 3, 10);          // Ponto de observação da câmera
@@ -73,7 +78,7 @@ void init(void)
     arvore = new Modelo3D(10.0f, -1.0f, 10.0f);                                                    // Posição inicial
     arvore->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/tree.obj"); // Carrega o modelo
     // 7, 84, 3
-    arvore->setColor(1.17f, 0.23f, 0.02f); // Define a cor do modelo
+    arvore->setColor(0.17f, 0.23f, 0.02f); // Define a cor do modelo
     arvore->setEscala(8.0f, 8.0f, 8.0f);   // Dobra o tamanho
     arvore->setRotacao(0.0f, 45.0f, 0.0f); // Rotaciona 45 graus no eixo Y
     modelos.push_back(*arvore);
@@ -215,7 +220,8 @@ void drawHUD()
 
     // Desenha o texto no canto superior esquerdo
     glColor3f(1.0f, 1.0f, 1.0f); // Cor branca para o texto
-    renderBitmapString(10, 580, GLUT_BITMAP_HELVETICA_18, "Pontos: 0");
+    std::string pontosStr = "Pontos: " + std::to_string(PontosManager::getPontos());
+    renderBitmapString(10, 580, GLUT_BITMAP_HELVETICA_18, pontosStr.c_str());
 
     // Restaura as matrizes de projeção e modelagem
     glPopMatrix();

@@ -41,7 +41,7 @@ void Tiro::drawTiro() const
   glPushMatrix();
   glPushAttrib(GL_CURRENT_BIT); // Salva o estado atual, incluindo a cor
 
-  glColor3f(1.0f, 0.0f, 0.0f); // Define a cor do tiro (vermelho)
+  glColor3f(0.0f, 0.0f, 0.0f); // Define a cor do tiro (vermelho)
   glTranslatef(position.x, position.y, position.z);
   glScalef(0.2f, 0.2f, 0.2f); // Escala o cubo para que seja pequeno
   glutSolidCube(1.0);         // Desenha um cubo sólido

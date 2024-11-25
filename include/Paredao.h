@@ -24,6 +24,7 @@
 #include "Ponto.h"
 #include "ListaDeCoresRGB.h"
 #include "TextureClass.h"
+#include "PontosManager.h"
 
 struct Cubo
 {

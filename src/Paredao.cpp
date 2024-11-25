@@ -154,9 +154,9 @@ void Paredao::detectarColisao(Ponto objetoPosicao)
       if (!cubos[x][y].quebrado)
       {
         // Verifica se o objeto colidiu com o cubo
-        if (objetoPosicao.x >= posicao.x + x && objetoPosicao.x <= posicao.x + x + 1 &&
-            objetoPosicao.y >= posicao.y + y && objetoPosicao.y <= posicao.y + y + 1 &&
-            objetoPosicao.z >= posicao.z && objetoPosicao.z <= posicao.z + 1)
+        if (objetoPosicao.x >= posicao.x + x - 0.5 && objetoPosicao.x <= posicao.x + x + 0.5 &&
+            objetoPosicao.y >= posicao.y + y - 0.5 && objetoPosicao.y <= posicao.y + y + 0.5 &&
+            objetoPosicao.z >= posicao.z - 0.5 && objetoPosicao.z <= posicao.z + 0.5)
         {
           // Marca o cubo como quebrado
           // cubos[x][y].quebrado = true;
@@ -169,6 +169,7 @@ void Paredao::detectarColisao(Ponto objetoPosicao)
               if (x + i >= 0 && x + i < largura && y + j >= 0 && y + j < altura)
               {
                 cubos[x + i][y + j].quebrado = true;
+                PontosManager::adicionarPontos(5);
               }
             }
           }
