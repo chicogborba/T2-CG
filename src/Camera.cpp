@@ -80,7 +80,7 @@ void Camera::lookSideways(int direction)
   ALVO->x -= OBS->x;
   ALVO->z -= OBS->z;
 
-  float alfa = (direction == 0) ? 0.05 : -0.05; // Define o ângulo de rotação
+  float alfa = (direction == 0) ? 0.02 : -0.02; // Define o ângulo de rotação
   float x = ALVO->x * cos(alfa) + ALVO->z * sin(alfa);
   float z = -ALVO->x * sin(alfa) + ALVO->z * cos(alfa);
   ALVO->x = x + OBS->x;
@@ -103,16 +103,34 @@ void Camera::lookSideways(int direction)
 // **********************************************************************
 void Camera::goForward(int direction)
 {
-  float walkSpeed = direction == 0 ? 0.15 : -0.15;
+  float walkSpeed = direction == 0 ? 0.15f : -0.15f;
+
+  // Normaliza o vetor direção (vetor de alvo)
   Ponto VetorAlvoUnitario = *VetorAlvo;
   VetorAlvoUnitario.versor(); // Normaliza o vetor direção
 
+  // Calcula o movimento
   VetorAlvoUnitario.multiplica(walkSpeed, walkSpeed, walkSpeed);
-  OBS->soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
-  ALVO->soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
 
-  player->setOBS(*OBS);
-  player->setVetorAlvo(*VetorAlvo);
+  // Nova posição de OBS e ALVO após o movimento
+  Ponto novoOBS = *OBS;
+  novoOBS.soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
+
+  Ponto novoALVO = *ALVO;
+  novoALVO.soma(VetorAlvoUnitario.x, 0, VetorAlvoUnitario.z);
+
+  // Verificação se o novo OBS e ALVO estão dentro dos limites
+  if (novoOBS.x + novoALVO.x * 0.38f >= -15.0f && novoOBS.x + novoALVO.x * 0.38f <= 15.0f &&
+      novoOBS.z + novoALVO.z * 0.38f >= 2.0f && novoOBS.z + novoALVO.z * 0.38f <= 30.0f)
+  {
+    // Se dentro dos limites, aplica o movimento
+    *OBS = novoOBS;
+    *ALVO = novoALVO;
+
+    player->setOBS(*OBS);
+    player->setVetorAlvo(*VetorAlvo);
+  }
+  // Caso contrário, a câmera não move.
 }
 
 // **********************************************************************

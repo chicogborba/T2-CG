@@ -26,6 +26,7 @@
 #include "TextureClass.h"
 #include "Modelo3D.h"
 #include "PontosManager.h"
+#include "Hud.h"
 
 #include <vector>
 #include <fstream>
@@ -33,6 +34,7 @@
 #include <iostream>
 #include <string>
 
+HUD hud;
 // Variáveis globais
 Ponto OBS(0, 3, 10);          // Ponto de observação da câmera
 Ponto ALVO(0, 0, 0);          // Ponto alvo da câmera
@@ -62,6 +64,12 @@ Modelo3D *fence6 = nullptr;
 
 Modelo3D *fence7 = nullptr;
 Modelo3D *fence8 = nullptr;
+
+Modelo3D *fence9 = nullptr;
+Modelo3D *fence10 = nullptr;
+
+Modelo3D *fence11 = nullptr;
+Modelo3D *fence12 = nullptr;
 
 // Uma lista de Modelos3D pra renderizar todos de uma vez
 std::vector<Modelo3D> modelos;
@@ -174,6 +182,34 @@ void init(void)
     fence8->setRotacao(0.0f, 90.0f, 0.0f);                                                          // Rotaciona 45 graus no eixo Y
     modelos.push_back(*fence8);
 
+    fence9 = new Modelo3D(-6.0f, 1.5f, 24.5f);                                                      // Posição inicial
+    fence9->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/fence.obj"); // Carrega o modelo
+    fence9->setColor(0.54f, 0.27f, 0.07f);                                                          // Define a cor do modelo
+    fence9->setEscala(0.6f, 0.25f, 0.25f);                                                          // Dobra o tamanho
+    fence9->setRotacao(0.0f, 0.0f, 0.0f);                                                           // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*fence9);
+
+    fence10 = new Modelo3D(6.0f, 1.5f, 24.5f);                                                       // Posição inicial
+    fence10->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/fence.obj"); // Carrega o modelo
+    fence10->setColor(0.54f, 0.27f, 0.07f);                                                          // Define a cor do modelo
+    fence10->setEscala(0.6f, 0.25f, 0.25f);                                                          // Dobra o tamanho
+    fence10->setRotacao(0.0f, 0.0f, 0.0f);                                                           // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*fence10);
+
+    fence11 = new Modelo3D(-6.0f, 1.5f, -24.5f);                                                     // Posição inicial
+    fence11->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/fence.obj"); // Carrega o modelo
+    fence11->setColor(0.54f, 0.27f, 0.07f);                                                          // Define a cor do modelo
+    fence11->setEscala(0.6f, 0.25f, 0.25f);                                                          // Dobra o tamanho
+    fence11->setRotacao(0.0f, 0.0f, 0.0f);                                                           // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*fence11);
+
+    fence12 = new Modelo3D(6.0f, 1.5f, -24.5f);                                                      // Posição inicial
+    fence12->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/fence.obj"); // Carrega o modelo
+    fence12->setColor(0.54f, 0.27f, 0.07f);                                                          // Define a cor do modelo
+    fence12->setEscala(0.6f, 0.25f, 0.25f);                                                          // Dobra o tamanho
+    fence12->setRotacao(0.0f, 0.0f, 0.0f);                                                           // Rotaciona 45 graus no eixo Y
+    modelos.push_back(*fence12);
+
     // Define a cor de fundo como um azul claro tipo o céu
     glClearColor(0.7f, 0.9f, 1.0f, 1.0f);
 
@@ -191,43 +227,6 @@ void init(void)
     paredao.carregarTextura("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/textures/brick.png");
 
     player.updatePlayerPosition();
-}
-
-void renderBitmapString(float x, float y, void *font, const char *string)
-{
-    // Posiciona o texto em coordenadas de tela
-    glRasterPos2f(x, y);
-    while (*string)
-    {
-        glutBitmapCharacter(font, *string);
-        ++string;
-    }
-}
-
-void drawHUD()
-{
-    // Salva a matriz de projeção e muda para ortográfica
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-
-    // Projeção ortográfica ajustada à janela
-    gluOrtho2D(0, 800, 0, 600);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-
-    // Desenha o texto no canto superior esquerdo
-    glColor3f(1.0f, 1.0f, 1.0f); // Cor branca para o texto
-    std::string pontosStr = "Pontos: " + std::to_string(PontosManager::getPontos());
-    renderBitmapString(10, 580, GLUT_BITMAP_HELVETICA_18, pontosStr.c_str());
-
-    // Restaura as matrizes de projeção e modelagem
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
 }
 
 // **********************************************************************
@@ -284,7 +283,7 @@ void display(void)
         modelo.desenhar();
     }
 
-    drawHUD();         // Desenha o HUD
+    hud.draw();        // Desenha o HUD
     glutSwapBuffers(); // Troca os buffers
 }
 
