@@ -19,6 +19,7 @@
 #include <vector>
 #include "Tiro.h"
 #include "Modelo3D.h"
+#include "PontosManager.h"
 
 // Classe que representa o jogador no ambiente 3D
 class Player

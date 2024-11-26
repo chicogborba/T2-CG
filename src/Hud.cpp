@@ -41,7 +41,7 @@ void HUD::draw()
   std::string pontosStr = "Pontos: " + std::to_string(PontosManager::getPontos());
   renderBitmapString(10, 580, GLUT_BITMAP_HELVETICA_18, pontosStr.c_str());
 
-  std::string forcaStr = "Forca: " + std::to_string(PontosManager::getPontos());
+  std::string forcaStr = "Forca: " + std::to_string(PontosManager::getVelocidadeTiro());
   renderBitmapString(10, 560, GLUT_BITMAP_HELVETICA_18, forcaStr.c_str());
 
   // Restaura as matrizes de projeção e modelagem

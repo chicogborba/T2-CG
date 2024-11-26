@@ -4,6 +4,11 @@
 
 /**
  * @brief Construtor da classe Paredao.
+ *
+ * @param largura Largura do paredão (em cubos 1x1x1).
+ * @param altura Altura do paredão (em cubos 1x1x1).
+ * @param posicao Posição do canto inferior esquerdo do paredão.
+ * @param seed Semente para a geração de cores.
  */
 Paredao::Paredao(int largura, int altura, Ponto posicao, int seed)
     : largura(largura), altura(altura), posicao(posicao), seed(seed)

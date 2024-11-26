@@ -89,12 +89,11 @@ std::vector<Modelo3D> modelos;
 void init(void)
 {
 
-    arvore = new Modelo3D(10.0f, -1.0f, 10.0f);                                                    // Posição inicial
-    arvore->carregarModelo("/Users/franciscoborba/Downloads/CodeBlocks 2/assets/models/tree.obj"); // Carrega o modelo
-    // 7, 84, 3
-    arvore->setColor(0.17f, 0.23f, 0.02f); // Define a cor do modelo
-    arvore->setEscala(8.0f, 8.0f, 8.0f);   // Dobra o tamanho
-    arvore->setRotacao(0.0f, 45.0f, 0.0f); // Rotaciona 45 graus no eixo Y
+    arvore = new Modelo3D(10.0f, -1.0f, 10.0f);
+    arvore->carregarModelo("./assets/models/tree.obj");
+    arvore->setColor(0.17f, 0.23f, 0.02f);
+    arvore->setEscala(8.0f, 8.0f, 8.0f);
+    arvore->setRotacao(0.0f, 45.0f, 0.0f);
     modelos.push_back(*arvore);
 
     arvore2 = new Modelo3D(10.0f, -1.0f, -10.0f);                                                   // Posição inicial

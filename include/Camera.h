@@ -21,6 +21,7 @@
 #include "Tools.h"
 #include "Instancia.h"
 #include "KeyboardController.h"
+#include "PontosManager.h"
 
 class Camera
 {

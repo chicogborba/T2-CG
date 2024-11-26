@@ -164,6 +164,15 @@ void Camera::updateCamera()
   {
     player->lowerCannon(1); // Abaixa o canhão
   }
+  // se a tecla for flecha para cima printar "oi"
+  if (keyboard.isKeyPressed('['))
+  {
+    PontosManager::diminuirVelocidadeTiro(1);
+  }
+  if (keyboard.isKeyPressed(']'))
+  {
+    PontosManager::adicionarVelocidadeTiro(1);
+  }
 
   // Adiciona a lógica de disparo apenas quando a tecla "espaço" for pressionada
   if (keyboard.isKeyPressed(' ') && !spaceKeyPressed)
